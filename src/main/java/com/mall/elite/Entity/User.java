@@ -18,8 +18,8 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue
-    @Column(unique = true, nullable = false)
-    private UUID id;
+    //@Column(unique = true, nullable = false)
+    private int id;
     @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false)
@@ -27,6 +27,6 @@ public class User {
     @Email
     @NotBlank(message = "Email is mandatory")
     private String email;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.ALL})
     private Collection<Role> roles = new ArrayList<>();
 }
