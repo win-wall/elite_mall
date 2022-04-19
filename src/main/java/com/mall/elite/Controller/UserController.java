@@ -2,11 +2,18 @@ package com.mall.elite.Controller;
 
 import com.mall.elite.Entity.Role;
 import com.mall.elite.Entity.User;
+import com.mall.elite.Repository.UserRepository;
+import com.mall.elite.Security.UserDetail;
+import com.mall.elite.Security.UserDetailService;
+import com.mall.elite.Security.jwt.JwtTokenProvider;
 import com.mall.elite.Service.UserServiceImp;
+import com.mall.elite.dto.request.UserLoginRequestDto;
 import lombok.Data;
-import org.aspectj.weaver.patterns.ReferencePointcut;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -18,6 +25,9 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserServiceImp userService;
+    @Autowired
+    AuthenticationManager authenticationManager;
+
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUser(){
@@ -37,6 +47,10 @@ public class UserController {
     public ResponseEntity<?> addRoleToUser(@RequestBody RoleToUserForm form){
         userService.addRoleToUser(form.getUsername(), form.getRoleName());
         return ResponseEntity.ok().build();
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticationUser( @RequestBody UserLoginRequestDto userLogin){
+        return ResponseEntity.ok().body(userService.login(userLogin));
     }
 }
 @Data

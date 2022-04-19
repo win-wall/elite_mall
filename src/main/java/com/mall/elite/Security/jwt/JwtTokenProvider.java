@@ -13,9 +13,9 @@ public class JwtTokenProvider {
     //! This is the secret key for JWT
     private final String JWT_SECRET = "elite";
     //!Time for a key to expire
-    private final long JWT_EXPIRATION = 604800000L;
+    private final Long JWT_EXPIRATION = 604800000L;
 
-    private String generateTokenFromUser(UserDetail userDetail){
+    public String generateTokenFromUser(UserDetail userDetail){
         Date date = new Date();
         Date expiryDate =new Date(date.getTime()+JWT_EXPIRATION);
         return Jwts.builder()

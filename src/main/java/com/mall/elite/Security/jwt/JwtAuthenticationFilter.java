@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
+//This class will check if request have a token
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailService userDetailService;
@@ -45,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
+    //So basically, this method will isolate the tag "Authorization and get JWT token after "Bearer".
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {

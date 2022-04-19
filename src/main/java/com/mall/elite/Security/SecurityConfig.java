@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -64,16 +65,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception{
+        http.cors().and().csrf().disable();
+        // Set session management to stateless
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // Set unauthorized requests exception handler
         http.authorizeRequests()
-                .antMatchers("/", "/home").permitAll() //! Allow all people to access this
-                .anyRequest().authenticated()//! Other request need to autheticated to access
-                .and()
-                .formLogin() //Cho phép người dùng xác thực bằng form login
-                .defaultSuccessUrl("/Hello")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .antMatchers("/login", "/logout", "/register").permitAll()
+                .antMatchers("/admin/**").permitAll()
+                .anyRequest().permitAll();
+        //http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);//! Allow all people to access this
+                //! Other request need to autheticated to access
+
+        //http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
