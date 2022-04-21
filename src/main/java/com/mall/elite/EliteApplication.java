@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -27,16 +28,15 @@ public class EliteApplication {
 
 		return args -> {
 			userService.saveRole(new Role(1L, "ROLE_USER"));
-			userService.saveRole(new Role(2L, "ROLE_MANAGER"));
-			userService.saveRole(new Role(3L, "ROLE_ADMIN"));
-			ArrayList<Role> role = new ArrayList<>();
-			userService.saveUser(new User(UUID.randomUUID(),"Jhon12",passwordEncoder.encode("123"),
+			Collection<Role> role =new ArrayList<>();
+
+			userService.saveUser(new User(null,"Jhon123",passwordEncoder.encode("123"),
 					"tuongph123@gmail.com","Jhon","Bla",true,true,role));
 			//userService.saveUser(new User(null,"Jhon1123","123","tuong124@gmail.com",new ArrayList<>()));
 
-			userService.addRoleToUser("Jhon1", "ROLE_USER");
+			userService.addRoleToUser("Jhon123", "ROLE_USER");
 			//userService.addRoleToUser("Jhon1123","ROLE_MANAGER");
-			userService.addRoleToUser("Jhon1", "ROLE_MANAGER");
+			//userService.addRoleToUser("Jhon1", "ROLE_MANAGER");
 		};
 	}
 }

@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,17 +48,29 @@ public class UserServiceImp implements UserService{
         return roleRepository.save(role);
     }
 
+
+    @Transactional
     @Override
     public void addRoleToUser(String username, String roleName) {
         log.info("Adding role {} to user {} to database", roleName, username);
+        Optional<Role> role = roleRepository.findByName(roleName);
         Optional<User> user = userRepository.findByUsername(username);
-        Role role = roleRepository.findByName(roleName);
+
+        User user1 = userRepository.findByUsername(username).orElseThrow(()-> new RuntimeException("User not found"));
         Collection<Role> roles = new ArrayList<>();
-        roles.add(role);
-        if(user.isPresent()) {
-            user.get().setRoles(roles);
-            userRepository.save(user.get());
+        if(!role.isPresent()){
+            roles.add(new Role(2L, "ROLE_ADMIN"));
         }
+        else{
+            roles.add(role.get());
+        }
+        user1.setRoles(roles);
+        //userRepository.save(user1);
+
+//        if(user.isPresent()) {
+//            user.get().setRoles(roles);
+//            userRepository.save(user.get());
+//        }
     }
     @Override
     public UserLoginResponseDto login(UserLoginRequestDto userLoginDto){

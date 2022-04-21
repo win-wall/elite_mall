@@ -18,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(unique = true, nullable = false)
     private UUID id;
     @Column(nullable = false, unique = true)
@@ -32,6 +32,10 @@ public class User {
     private String lastName;
     private boolean isEnable;
     private boolean isDelete;
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Collection<Role> roles = new ArrayList<>();
 }

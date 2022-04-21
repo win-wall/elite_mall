@@ -52,6 +52,10 @@ public class UserController {
     public ResponseEntity<?> authenticationUser( @RequestBody UserLoginRequestDto userLogin){
         return ResponseEntity.ok().body(userService.login(userLogin));
     }
+    @GetMapping("/hello")
+    public ResponseEntity<?> returnHello(){
+        return ResponseEntity.ok().body("hello");
+    }
 }
 @Data
 class RoleToUserForm{

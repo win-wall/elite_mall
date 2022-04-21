@@ -47,22 +47,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailService) //! This line is we provide UserDetail Service cho Spring Security
                 .passwordEncoder(passwordEncoder());
     }
-
-    @Bean
-    @Override
-    //* this "UserDetailsService provide Spring security a user
-    public UserDetailsService userDetailsService(){
-        //! remember to delete this. it is just testing JWT
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(
-                User.withDefaultPasswordEncoder()
-                        .username("tuong")
-                        .password("tuong123")
-                        .roles("USER")
-                        .build()
-        );
-        return manager;
-    }
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.cors().and().csrf().disable();
@@ -70,12 +54,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Set unauthorized requests exception handler
         http.authorizeRequests()
-                .antMatchers("/login", "/logout", "/register").permitAll()
+                .antMatchers("/api/login", "/logout", "/register").permitAll()
                 .antMatchers("/admin/**").permitAll()
-                .anyRequest().permitAll();
+                .anyRequest().authenticated();
         //http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);//! Allow all people to access this
                 //! Other request need to autheticated to access
 
-        //http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
