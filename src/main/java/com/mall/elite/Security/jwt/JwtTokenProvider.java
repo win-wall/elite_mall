@@ -1,8 +1,10 @@
 package com.mall.elite.Security.jwt;
 
+import com.mall.elite.Entity.User;
 import com.mall.elite.Security.UserDetail;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -11,13 +13,26 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
     //! This is the secret key for JWT
-    private final String JWT_SECRET = "elite";
+    @Value("${JWT_SERCET}")
+    private String JWT_SECRET;
     //!Time for a key to expire
-    private final Long JWT_EXPIRATION = 604800000L;
-
+    @Value("${JWT_EXPIRATION_MIN}")
+    private Long JWT_EXPIRATION_MIN;
+    @Value("${JWT_EXPIRATION_DAY}")
+    private Long JWT_EXPIRATION_DAY;
     public String generateTokenFromUser(UserDetail userDetail){
         Date date = new Date();
-        Date expiryDate =new Date(date.getTime()+JWT_EXPIRATION);
+        Date expiryDate =new Date(date.getTime()+JWT_EXPIRATION_DAY);
+        return Jwts.builder()
+                .setSubject(Long.toString(userDetail.getUser().getId()))
+                .setIssuedAt(date)
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
+                .compact();
+    }
+    public String generateRefreshTokenFromUser(UserDetail userDetail){
+        Date date = new Date();
+        Date expiryDate = new Date(date.getTime() + JWT_EXPIRATION_MIN);
         return Jwts.builder()
                 .setSubject(Long.toString(userDetail.getUser().getId()))
                 .setIssuedAt(date)

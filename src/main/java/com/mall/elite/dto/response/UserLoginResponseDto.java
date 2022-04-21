@@ -1,5 +1,6 @@
 package com.mall.elite.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -10,6 +11,8 @@ public class UserLoginResponseDto {
     private String username;
     @NotBlank
     private String password;
-    @NotBlank
+    @JsonProperty("token_access")
     private String tokenAccess;
+    @JsonProperty("token_refresh")
+    private String tokenRefresh;
 }
