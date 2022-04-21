@@ -65,7 +65,7 @@ public class UserServiceImp implements UserService{
         User user = userOptional.orElseThrow(()->new RuntimeException("Username or Password do not correct"));
 
         if(passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())){
-            UserLoginResponseDto userLoginResponseDto = modelMapper.map(userLoginDto, UserLoginResponseDto.class);
+            UserLoginResponseDto userLoginResponseDto = modelMapper.map(user, UserLoginResponseDto.class);
 
             userLoginResponseDto.setTokenRefresh(tokenProvider.generateTokenFromUser(userDetailService.loadUserByUsername(user.getUsername())));
             userLoginResponseDto.setTokenAccess(tokenProvider.generateRefreshTokenFromUser(userDetailService.loadUserByUsername(user.getUsername())));

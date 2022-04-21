@@ -24,7 +24,7 @@ public class JwtTokenProvider {
         Date date = new Date();
         Date expiryDate =new Date(date.getTime()+JWT_EXPIRATION_DAY);
         return Jwts.builder()
-                .setSubject(Long.toString(userDetail.getUser().getId()))
+                .setSubject(userDetail.getUser().getUsername())
                 .setIssuedAt(date)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)
@@ -34,7 +34,7 @@ public class JwtTokenProvider {
         Date date = new Date();
         Date expiryDate = new Date(date.getTime() + JWT_EXPIRATION_MIN);
         return Jwts.builder()
-                .setSubject(Long.toString(userDetail.getUser().getId()))
+                .setSubject(userDetail.getUser().getUsername())
                 .setIssuedAt(date)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, JWT_SECRET)

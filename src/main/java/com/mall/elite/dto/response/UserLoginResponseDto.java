@@ -15,4 +15,12 @@ public class UserLoginResponseDto {
     private String tokenAccess;
     @JsonProperty("token_refresh")
     private String tokenRefresh;
+    @JsonProperty("first_name")
+    private String firstName;
+    @JsonProperty("last_name")
+    private String lastName;
+    @JsonProperty("is_enable")
+    private boolean isEnable;
+    @JsonProperty("is_delete")
+    private boolean isDelete;
 }
