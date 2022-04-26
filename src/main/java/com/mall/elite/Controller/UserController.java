@@ -8,6 +8,7 @@ import com.mall.elite.Security.UserDetailService;
 import com.mall.elite.Security.jwt.JwtTokenProvider;
 import com.mall.elite.Service.UserServiceImp;
 import com.mall.elite.dto.request.UserLoginRequestDto;
+import com.mall.elite.dto.request.UserResigterRequestDto;
 import lombok.Data;
 
 import org.modelmapper.ModelMapper;
@@ -51,6 +52,10 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> authenticationUser( @RequestBody UserLoginRequestDto userLogin){
         return ResponseEntity.ok().body(userService.login(userLogin));
+    }
+    @PostMapping("/resigter")
+    public ResponseEntity<?> resigter(@RequestBody UserResigterRequestDto userResigterRequestDto){
+        return ResponseEntity.ok().body(userService.resigter(userResigterRequestDto, "ROLE_USER"));
     }
     @GetMapping("/hello")
     public ResponseEntity<?> returnHello(){

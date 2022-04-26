@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Set unauthorized requests exception handler
         http.authorizeRequests()
-                .antMatchers("/api/login", "/logout", "/register").permitAll()
+                .antMatchers("/api/login", "/api/resigter", "/logout", "/register").permitAll()
                 .antMatchers("/admin/**").permitAll()
                 .anyRequest().authenticated();
         //http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);//! Allow all people to access this

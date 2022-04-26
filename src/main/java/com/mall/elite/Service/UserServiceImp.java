@@ -8,10 +8,15 @@ import com.mall.elite.Security.UserDetail;
 import com.mall.elite.Security.UserDetailService;
 import com.mall.elite.Security.jwt.JwtTokenProvider;
 import com.mall.elite.dto.request.UserLoginRequestDto;
+import com.mall.elite.dto.request.UserResigterRequestDto;
 import com.mall.elite.dto.response.UserLoginResponseDto;
+import com.mall.elite.dto.response.UserResigterResponseDto;
+import com.mall.elite.expections.BadRequestExpection;
+import com.mall.elite.expections.NotFoundExpection;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,6 +41,8 @@ public class UserServiceImp implements UserService{
     private JwtTokenProvider tokenProvider;
     @Autowired
     private UserDetailService userDetailService;
+
+
     @Override
     public User saveUser(User user) {
         log.info("Saving new use {} to database", user.getUsername());
@@ -56,26 +63,41 @@ public class UserServiceImp implements UserService{
         Optional<Role> role = roleRepository.findByName(roleName);
         Optional<User> user = userRepository.findByUsername(username);
 
-        User user1 = userRepository.findByUsername(username).orElseThrow(()-> new RuntimeException("User not found"));
+        User user1 = userRepository.findByUsername(username).orElseThrow(()-> new NotFoundExpection("User not found"));
         Collection<Role> roles = new ArrayList<>();
-        if(!role.isPresent()){
-            roles.add(new Role(2L, "ROLE_ADMIN"));
-        }
-        else{
+        if(role.isPresent()){
             roles.add(role.get());
         }
+        else{
+            throw new NotFoundExpection("Doesn't have Role. Please create a new one to add role to user: "+username);
+        }
         user1.setRoles(roles);
-        //userRepository.save(user1);
+    }
 
-//        if(user.isPresent()) {
-//            user.get().setRoles(roles);
-//            userRepository.save(user.get());
-//        }
+    @Override
+    public UserResigterResponseDto resigter(UserResigterRequestDto userResigterRequestDto, String roleName){
+        if(userRepository.findByUsernameOrEmail(userResigterRequestDto.getUsername(), userResigterRequestDto.getEmail())
+                != null){
+            throw new BadRequestExpection("Username or Email be already in use. Please try another one!");
+        }
+        if(!roleRepository.findByName(roleName).isPresent()){
+            throw new BadRequestExpection("Role is empty. Please contact to admin to add role to continue!");
+        }
+        User user = modelMapper.map(userResigterRequestDto, User.class);
+        Role role = roleRepository.findByName(roleName).get();
+        user.setEnable(true);
+        user.setDelete(false);
+        Collection<Role> roles = new ArrayList<>();
+        roles.add(role);
+        user.setRoles(roles);
+        userRepository.save(user);
+        UserResigterResponseDto userResigterResponseDto = modelMapper.map(user, UserResigterResponseDto.class);
+        return userResigterResponseDto;
     }
     @Override
     public UserLoginResponseDto login(UserLoginRequestDto userLoginDto){
         Optional<User> userOptional = userRepository.findByUsername(userLoginDto.getUsername());
-        User user = userOptional.orElseThrow(()->new RuntimeException("Username or Password do not correct"));
+        User user = userOptional.orElseThrow(()->new NotFoundExpection("Username or Password do not correct"));
 
         if(passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())){
             UserLoginResponseDto userLoginResponseDto = modelMapper.map(user, UserLoginResponseDto.class);
@@ -84,7 +106,7 @@ public class UserServiceImp implements UserService{
             userLoginResponseDto.setTokenAccess(tokenProvider.generateRefreshTokenFromUser(userDetailService.loadUserByUsername(user.getUsername())));
             return userLoginResponseDto;
         } else{
-            throw new RuntimeException("Username or Password aren't correct");
+            throw new NotFoundExpection("Username or Password aren't correct");
         }
     }
 
