@@ -1,9 +1,8 @@
 package com.mall.elite;
 
-import com.mall.elite.Entity.Role;
-import com.mall.elite.Entity.User;
-import com.mall.elite.Service.UserService;
-import com.mall.elite.Service.UserServiceImp;
+import com.mall.elite.entity.Role;
+import com.mall.elite.entity.User;
+import com.mall.elite.service.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -13,8 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.UUID;
 
 @SpringBootApplication
 public class EliteApplication {

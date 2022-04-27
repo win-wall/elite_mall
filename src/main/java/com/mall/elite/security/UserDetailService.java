@@ -1,9 +1,8 @@
-package com.mall.elite.Security;
+package com.mall.elite.security;
 
-import com.mall.elite.Entity.User;
-import com.mall.elite.Repository.UserRepository;
+import com.mall.elite.entity.User;
+import com.mall.elite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.mall.elite.Entity;
+package com.mall.elite.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

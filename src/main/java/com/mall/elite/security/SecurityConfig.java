@@ -1,7 +1,6 @@
-package com.mall.elite.Security;
+package com.mall.elite.security;
 
-import com.mall.elite.Security.jwt.JwtAuthenticationFilter;
-import com.mall.elite.Service.UserService;
+import com.mall.elite.security.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,11 +12,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -54,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // Set unauthorized requests exception handler
         http.authorizeRequests()
-                .antMatchers("/api/login", "/api/resigter", "/logout", "/register").permitAll()
+                .antMatchers("/api/login", "/api/resigter","/api/users", "/logout", "/register").permitAll()
                 .antMatchers("/admin/**").permitAll()
                 .anyRequest().authenticated();
         //http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);//! Allow all people to access this

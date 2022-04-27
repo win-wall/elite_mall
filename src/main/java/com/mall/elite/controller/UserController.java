@@ -1,17 +1,12 @@
-package com.mall.elite.Controller;
+package com.mall.elite.controller;
 
-import com.mall.elite.Entity.Role;
-import com.mall.elite.Entity.User;
-import com.mall.elite.Repository.UserRepository;
-import com.mall.elite.Security.UserDetail;
-import com.mall.elite.Security.UserDetailService;
-import com.mall.elite.Security.jwt.JwtTokenProvider;
-import com.mall.elite.Service.UserServiceImp;
+import com.mall.elite.entity.Role;
+import com.mall.elite.entity.User;
+import com.mall.elite.service.UserServiceImp;
 import com.mall.elite.dto.request.UserLoginRequestDto;
 import com.mall.elite.dto.request.UserResigterRequestDto;
 import lombok.Data;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

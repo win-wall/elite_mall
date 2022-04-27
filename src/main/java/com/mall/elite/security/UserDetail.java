@@ -1,7 +1,7 @@
-package com.mall.elite.Security;
+package com.mall.elite.security;
 
-import com.mall.elite.Entity.Role;
-import com.mall.elite.Entity.User;
+import com.mall.elite.entity.Role;
+import com.mall.elite.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,7 +1,6 @@
-package com.mall.elite.Security.jwt;
+package com.mall.elite.security.jwt;
 
-import com.mall.elite.Entity.User;
-import com.mall.elite.Security.UserDetail;
+import com.mall.elite.security.UserDetail;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

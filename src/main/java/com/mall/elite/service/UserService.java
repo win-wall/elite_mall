@@ -1,7 +1,7 @@
-package com.mall.elite.Service;
+package com.mall.elite.service;
 
-import com.mall.elite.Entity.Role;
-import com.mall.elite.Entity.User;
+import com.mall.elite.entity.Role;
+import com.mall.elite.entity.User;
 import com.mall.elite.dto.request.UserLoginRequestDto;
 
 import com.mall.elite.dto.request.UserResigterRequestDto;

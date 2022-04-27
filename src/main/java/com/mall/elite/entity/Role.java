@@ -1,12 +1,10 @@
-package com.mall.elite.Entity;
+package com.mall.elite.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Set;
 
 @Entity
 @Data

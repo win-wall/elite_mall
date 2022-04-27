@@ -1,12 +1,11 @@
-package com.mall.elite.Service;
+package com.mall.elite.service;
 
-import com.mall.elite.Entity.Role;
-import com.mall.elite.Entity.User;
-import com.mall.elite.Repository.RoleRepository;
-import com.mall.elite.Repository.UserRepository;
-import com.mall.elite.Security.UserDetail;
-import com.mall.elite.Security.UserDetailService;
-import com.mall.elite.Security.jwt.JwtTokenProvider;
+import com.mall.elite.entity.Role;
+import com.mall.elite.entity.User;
+import com.mall.elite.repository.RoleRepository;
+import com.mall.elite.repository.UserRepository;
+import com.mall.elite.security.UserDetailService;
+import com.mall.elite.security.jwt.JwtTokenProvider;
 import com.mall.elite.dto.request.UserLoginRequestDto;
 import com.mall.elite.dto.request.UserResigterRequestDto;
 import com.mall.elite.dto.response.UserLoginResponseDto;
@@ -16,8 +15,6 @@ import com.mall.elite.expections.NotFoundExpection;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -92,6 +89,7 @@ public class UserServiceImp implements UserService{
         user.setRoles(roles);
         userRepository.save(user);
         UserResigterResponseDto userResigterResponseDto = modelMapper.map(user, UserResigterResponseDto.class);
+        log.info(String.valueOf(userResigterResponseDto));
         return userResigterResponseDto;
     }
     @Override

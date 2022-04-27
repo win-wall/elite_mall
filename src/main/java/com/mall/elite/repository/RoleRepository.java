@@ -1,6 +1,6 @@
-package com.mall.elite.Repository;
+package com.mall.elite.repository;
 
-import com.mall.elite.Entity.Role;
+import com.mall.elite.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
