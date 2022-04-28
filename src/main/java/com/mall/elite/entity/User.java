@@ -1,6 +1,7 @@
 package com.mall.elite.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,8 +31,8 @@ public class User {
     private String email;
     private String firstName;
     private String lastName;
-    private boolean isEnable;
-    private boolean isDelete;
+    private boolean isEnable = true;
+    private boolean isDelete = false;
     @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",

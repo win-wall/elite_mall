@@ -33,7 +33,8 @@ public class UserServiceImp implements UserService{
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    private final ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private ModelMapper modelMapper;
     @Autowired
     private JwtTokenProvider tokenProvider;
     @Autowired
@@ -77,19 +78,19 @@ public class UserServiceImp implements UserService{
                 != null){
             throw new BadRequestExpection("Username or Email be already in use. Please try another one!");
         }
-        if(!roleRepository.findByName(roleName).isPresent()){
+        Optional<Role> roleOtp = roleRepository.findByName(roleName);
+        if(!roleOtp.isPresent()){
             throw new BadRequestExpection("Role is empty. Please contact to admin to add role to continue!");
         }
+        userResigterRequestDto.setPassword(passwordEncoder.encode(userResigterRequestDto.getPassword()));
         User user = modelMapper.map(userResigterRequestDto, User.class);
-        Role role = roleRepository.findByName(roleName).get();
-        user.setEnable(true);
-        user.setDelete(false);
+        Role role = roleOtp.get();
         Collection<Role> roles = new ArrayList<>();
         roles.add(role);
         user.setRoles(roles);
         userRepository.save(user);
         UserResigterResponseDto userResigterResponseDto = modelMapper.map(user, UserResigterResponseDto.class);
-        log.info(String.valueOf(userResigterResponseDto));
+        log.info("save user {} to database",String.valueOf(userResigterResponseDto));
         return userResigterResponseDto;
     }
     @Override
