@@ -85,7 +85,7 @@ public class UserServiceImp implements UserService{
         userResigterRequestDto.setPassword(passwordEncoder.encode(userResigterRequestDto.getPassword()));
         User user = modelMapper.map(userResigterRequestDto, User.class);
         Role role = roleOtp.get();
-        Collection<Role> roles = new ArrayList<>();
+        Collection<Role> roles = user.getRoles();
         roles.add(role);
         user.setRoles(roles);
         userRepository.save(user);
@@ -96,7 +96,7 @@ public class UserServiceImp implements UserService{
     @Override
     public UserLoginResponseDto login(UserLoginRequestDto userLoginDto){
         Optional<User> userOptional = userRepository.findByUsername(userLoginDto.getUsername());
-        User user = userOptional.orElseThrow(()->new NotFoundExpection("Username or Password do not correct"));
+        User user = userOptional.orElseThrow(()->new NotFoundExpection("Username is not correct!"));
 
         if(passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())){
             UserLoginResponseDto userLoginResponseDto = modelMapper.map(user, UserLoginResponseDto.class);
